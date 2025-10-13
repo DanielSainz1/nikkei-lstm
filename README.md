@@ -2,113 +2,61 @@
 
 
 
-\[!\[Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/DanielSainz1/nikkei-lstm/blob/main/notebooks/01\_lstm\_nikkei.ipynb)
-
-
-
 \*\*Individual project – Neural Networks \& Deep Learning (grade: 9/10)\*\*  
 
-\*\*Stack:\*\* Python, TensorFlow/Keras, scikit-learn, pandas, yfinance, Jupyter, Matplotlib
+Stack: Python, TensorFlow/Keras, scikit-learn, pandas, yfinance, Jupyter, Matplotlib
 
 
 
----
-
-
-
-\## 1) Objective
+\## Objective
 
 Forecast the \*\*daily close\*\* of the Nikkei-225 using a sequence model and evaluate \*\*out-of-sample\*\* performance with business-relevant metrics.
 
 
 
-\## 2) Data \& Split
+\## Data \& Split
 
-\- Historical daily close from Yahoo Finance via `yfinance` (`^N225`).
+\- Source: Yahoo Finance (`^N225`) via `yfinance`.
 
-\- \*\*Sliding window:\*\* 60 \*\*trading\*\* days → next-day close (\*sequence-to-one\*).
+\- Sliding window: \*\*60 trading days → next-day close\*\* (\*sequence-to-one\*).
 
-\- \*\*Train/Val/Test:\*\* 2021–2022 for training/validation; \*\*2023\*\* held-out for test.
+\- Train/Val/Test: \*\*2021–2022\*\* for training/validation; \*\*2023\*\* held out for test.
 
-\- \*\*Scaling:\*\* `MinMaxScaler` fitted on \*\*train only\*\*, then applied to val/test (to avoid leakage).
-
-
-
-\## 3) Model \& Training
-
-\- \*\*Architecture:\*\* 3× LSTM (64 units) + dropout + dense (\*\*~85k params\*\*).
-
-\- \*\*Loss/Opt:\*\* MSE with Adam; learning curves tracked.
-
-\- \*\*Regularization:\*\* dropout + \*\*EarlyStopping\*\* on validation loss.
+\- Scaling: `MinMaxScaler` \*\*fitted on train only\*\*, then applied to val/test (avoid leakage).
 
 
 
-\## 4) Evaluation
+\## Model \& Training
 
-\- \*\*Primary metric:\*\* \*\*MAPE ≈ 8.3%\*\* on the \*\*2023\*\* test set.
+\- Architecture: \*\*3× LSTM (64 units)\*\* + dropout + dense (~\*\*85k params\*\*).
 
-\- \*\*Additional signals:\*\* validation-loss minimum around \*\*epoch ~54\*\*; plots of \*\*actual vs. predicted\*\* and \*\*residuals\*\* to assess drift and fit stability.
+\- Loss/Opt: \*\*MSE\*\* with \*\*Adam\*\*; learning curves tracked.
 
-
-
-\## 5) Baselines (uplift)
-
-\- \*\*Naïve last-value\*\* and \*\*Moving Average (k = 5, 10, 20)\*\* using only past data.
-
-\- \*\*Result:\*\* LSTM improves MAPE vs. Naïve by \*\*+X%\*\* and vs. MA-10 by \*\*+Y%\*\* on 2023. \*(Replace X/Y once computed.)\*
+\- Regularization: dropout + \*\*EarlyStopping\*\* on validation loss.
 
 
 
-\## 6) What mattered technically
+\## Evaluation
 
-\- Correct handling of \*\*time-series leakage\*\* (scaler trained on train only).
+\- \*\*MAPE ≈ 8.3%\*\* on the \*\*2023\*\* test set.
 
-\- \*\*Reproducible\*\* pipeline (pandas/Jupyter) and clear plots.
-
-\- Sensible \*\*sequence length\*\* (60) balancing memory and short-term signal.
-
-\- Detection of \*\*overfitting\*\* after prolonged training → EarlyStopping.
+\- Additional signals: validation-loss minimum around \*\*epoch ~54\*\*; plots of \*\*actual vs. predicted\*\* and \*\*residuals\*\*.
 
 
 
-\## 7) Results \& Next steps
+\## Baselines (uplift)
 
-\- Achieved \*\*MAPE ~8.3% OOS (2023)\*\*; model tracks trend and short-term dynamics.
+\- \*\*Naïve last-value\*\* and \*\*Moving Average (k=5, 10, 20)\*\* using only past data.
 
-\- Next: multivariate features (\*\*OHLCV\*\*, returns, MAs, RSI), \*\*ReduceLROnPlateau\*\*, and walk-forward CV.
-
-
-
----
+\- Result: LSTM improves MAPE vs. Naïve by \*\*+X%\*\* and vs. MA-10 by \*\*+Y%\*\* on 2023. \*(actualiza X/Y cuando lo calcules).\*
 
 
 
 \## Reproduce
 
+\- Notebook: `notebooks/01\_lstm\_nikkei.ipynb`  
 
-
-```bash
-
-pip install -r requirements.txt
-
-
-
-\# 1) Download data \& create splits
-
-python -m src.data
-
-
-
-\# 2) (Optional) Train model from scripts
-
-python -m src.model
-
-
-
-\# 3) Evaluate baselines / produce plots
-
-python -m src.eval
+\- Full report (PDF): `reports/ProyectoFinalRedes.pdf`
 
 
 
